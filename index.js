@@ -55,7 +55,8 @@ company : ${company}
         if (error) {
             console.log(error);
             res.status(500).json({
-                error : "something went wrong"
+                error:error,
+                message : "something went wrong"
             })
         } else {
             console.log('Email sent: ' + info.response);
