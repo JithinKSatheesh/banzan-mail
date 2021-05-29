@@ -1,10 +1,11 @@
-var express = require('express')
-var nodemailer = require('nodemailer')
-var cors = require('cors')
-// const cool = require('cool-ascii-faces');
+const express = require('express')
+const nodemailer = require('nodemailer')
+const cors = require('cors');
+const { renderMessage_1, renderMessage_2 } = require("./renderMessages");
+
 const PORT = process.env.PORT || 5000;
 
-var app = express()
+const app = express()
 
 app.use(cors())
 
@@ -29,7 +30,7 @@ app.get('/',(req,res)=>{
 
 app.get('/mail/contact',(req,res)=>{
 
-    const {name,email,phoneNo,message,subject,linkedin,company} = req.query
+    const {name,email,message,subject} = req.query
 
     // job,education,relocate
 
@@ -37,7 +38,42 @@ app.get('/mail/contact',(req,res)=>{
         
         to: 'jithinksatheesh@gmail.com',
         subject: `${subject}`,
-        text: renderMessage_1(req.query) ,
+        html: renderMessage_1(req.query) ,
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+            res.status(500).json({
+                error:error,
+                message : "something went wrong"
+            })
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.status(200).json({
+                name : name,
+                email : email,
+                message : message,
+            })
+        }
+    });
+
+    
+})
+
+
+
+app.get('/mail/careers',(req,res)=>{
+
+    const {name,email,message,subject} = req.query
+
+
+
+    var mailOptions = {
+        
+        to: 'jithinksatheesh@gmail.com',
+        subject: `${subject}`,
+        html: renderMessage_2(req.query) ,
     };
     
     transporter.sendMail(mailOptions, function(error, info){
@@ -64,26 +100,3 @@ console.log("started...")
 app.listen(PORT)
 
 
-    const renderMessage_1 = ({name,email,phoneNo,message,subject,linkedin,company})=>{
-
-
-        return(
-                ` 
-
-        Message from  ${email}
-        =========================
-
-        ${message}
-
-
-        =========================
-        Name : ${name}  
-        email : ${email} 
-        phoneNo : ${phoneNo}
-        linkedin: ${linkedin}
-        company : ${company} 
-
-
-                        `
-            )
-    }
