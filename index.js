@@ -1,6 +1,8 @@
 var express = require('express')
 var nodemailer = require('nodemailer')
 var cors = require('cors')
+// const cool = require('cool-ascii-faces');
+const PORT = process.env.PORT || 5000;
 
 var app = express()
 
@@ -69,4 +71,4 @@ company : ${company}
 })
 
 console.log("started...")
-app.listen(3300)
+app.listen(PORT)
