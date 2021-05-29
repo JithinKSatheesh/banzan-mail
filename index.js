@@ -36,7 +36,7 @@ app.get('/mail/contact',(req,res)=>{
 
     var mailOptions = {
         
-        to: 'jithinksatheesh@gmail.com',
+        to: 'contact.form.banzan@gmail.com',
         subject: `${subject}`,
         html: renderMessage_1(req.query) ,
     };
@@ -71,7 +71,7 @@ app.get('/mail/careers',(req,res)=>{
 
     var mailOptions = {
         
-        to: 'jithinksatheesh@gmail.com',
+        to: 'contact.form.banzan@gmail.com',
         subject: `${subject}`,
         html: renderMessage_2(req.query) ,
     };
