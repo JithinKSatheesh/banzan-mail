@@ -8,13 +8,6 @@ var app = express()
 
 app.use(cors())
 
-app.get('/',(req,res)=>{
-
-    res.status(200).json({
-        data:'ok'
-    })
-})
-
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -23,32 +16,28 @@ var transporter = nodemailer.createTransport({
     }
   })
 
+
+
+app.get('/',(req,res)=>{
+
+    res.status(200).json({
+        data:'ok'
+    })
+})
+
+
+
 app.get('/mail/contact',(req,res)=>{
 
     const {name,email,phoneNo,message,subject,linkedin,company} = req.query
+
+    // job,education,relocate
 
     var mailOptions = {
         
         to: 'jithinksatheesh@gmail.com',
         subject: `${subject}`,
-
-text: ` 
-
-Message from  ${email}
-=========================
-
-${message}
-
-
-=========================
-Name : ${name}  
-email : ${email} 
-phoneNo : ${phoneNo}
-linkedin: ${linkedin}
-company : ${company} 
-
-
-                `,
+        text: renderMessage_1(req.query) ,
     };
     
     transporter.sendMail(mailOptions, function(error, info){
@@ -73,3 +62,28 @@ company : ${company}
 
 console.log("started...")
 app.listen(PORT)
+
+
+    const renderMessage_1 = ({name,email,phoneNo,message,subject,linkedin,company})=>{
+
+
+        return(
+                ` 
+
+        Message from  ${email}
+        =========================
+
+        ${message}
+
+
+        =========================
+        Name : ${name}  
+        email : ${email} 
+        phoneNo : ${phoneNo}
+        linkedin: ${linkedin}
+        company : ${company} 
+
+
+                        `
+            )
+    }
